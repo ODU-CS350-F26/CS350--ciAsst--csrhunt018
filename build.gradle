@@ -26,6 +26,14 @@ task copyDocs(type: Copy, dependsOn: 'javadoc') {
     into 'build/reports'
 }
 
-task reports(dependsOn: ['copyDocs', 'test']) {
+task generateIndexMd {
+    outputs.file "build/reports/index.md"
+    doLast {
+        def file = new File("build/reports/index.md")
+        file.text = "# CS350 CI Assignment\n\n[View Test Reports](tests/test/index.html)\n\n[View Javadoc](javadoc/index.html)\n"
+    }
+}
+
+task reports(dependsOn: ['copyDocs', 'test', 'generateIndexMd']) {
     description 'Generate all reports for this project'
 }
